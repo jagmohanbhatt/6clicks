@@ -1,0 +1,44 @@
+Question 2
+
+a) There are many ways you can achieve it, here are few of them:
+
+SELECT 
+	s1.Id, 
+	s1.Name, 
+	s1.Marks 
+FROM 
+	Students s1 inner join 
+
+(SELECT top 1 id, MAX(Marks) as marks FROM Students GROUP BY id order by marks desc) s2 
+ON s1.Id = s2.Id;
+
+
+-----------------------------------------------------------------------
+
+
+SELECT Id, Name, Class, Marks
+FROM(
+  SELECT *, ROW_NUMBER()OVER(ORDER BY Marks DESC) rn
+    FROM Students
+)X
+WHERE rn = 1;
+
+-------------------------------------------------------------------------
+
+I wasn't sure if only Students table was to be considered for fetching the highest marks or sum all the marks in StudentMarks table (I assumed that Students table has the calcualted marks from StudentMarks). 
+
+If that be the case, above queries could be modified for the same result
+
+
+SELECT 
+	s1.Id, 
+	s1.Name, 
+	s2.Marks 
+FROM 
+	Students s1 inner join 
+(
+	SELECT top 1 StudentId as Id, sum(Marks) as marks FROM StudentMarks GROUP BY StudentId order by marks desc
+) s2 
+ON s1.Id = s2.Id;
+
+
