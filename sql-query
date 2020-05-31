@@ -42,3 +42,23 @@ FROM
 ON s1.Id = s2.Id;
 
 
+
+
+b) 
+--I have used PIVOT here to accomplish the task.
+--Only limitation with PIVOT is that the columns to pivot needs to be hard coded. For a stand-alone query, I have provided 
+--the subjects hardcoded here.
+--In a bigger application, I'd go on to create a procedure, build an SQL query in a string form\
+--and have the columns passed as a parameter after querying directly from Subject table. Stored proc approach would allow us
+--to pass dynamic columns
+
+SELECT * FROM (
+  select s1.Name as Student, s3.Name as [Subject], s2.Marks from Students s1 inner join StudentMarks s2 on s1.Id = s2.StudentId
+inner join Subjects s3 on s3.Id = s2.SubjectId
+) StudentResults
+PIVOT (
+  SUM([Marks])
+  FOR [Subject]
+  IN (English, Maths)
+) AS PivotTable
+
