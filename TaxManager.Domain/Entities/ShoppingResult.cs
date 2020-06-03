@@ -7,6 +7,7 @@ namespace TaxManager.Domain.Entities
         public decimal Total { get; set; }
         public decimal TotalSalesTax { get; set; }
         public decimal TotalImportTax { get; set; }
+        public List<TaxDetail> TaxDetail { get; set; }
         public List<Item> ItemsBilled { get; set; }
 
         //In real world, this normally doesn't exist but we need to show data on console.

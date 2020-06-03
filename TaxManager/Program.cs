@@ -18,6 +18,7 @@ namespace TaxManager
                 .AddTransient<ITaxRateProvider, TaxRateProvider>()
                 .AddTransient<BasicTaxFactory>()
                 .AddTransient<ImportTaxFactory>()
+                .AddTransient<TaxDetail>()
                 .AddTransient<ShoppingResult>()
                 .AddTransient<CartItem>()
                 .AddTransient<Cart>()
@@ -45,7 +46,10 @@ namespace TaxManager
             ShoppingResult result_1 = cart1.Buy();
             result_1.ItemsBilled.ForEach(delegate (Item item)
             {
-                Console.WriteLine($"{item.Qty} {item.Name} at ${item.Price}");
+                Console.WriteLine("");
+                Console.Write($"{item.Qty} {item.Name} at ${item.Price}");
+                if(item.IsExempted())
+                    Console.Write($"(Exempted from tax)\n");
             });
 
             Console.WriteLine("-------------------Ouput 1--------------------");
@@ -64,6 +68,12 @@ namespace TaxManager
             {
                 Console.WriteLine($"{item.Qty} {item.Name} at ${item.Price}");
             }
+
+            Console.WriteLine("-------------------Ouput 2--------------------");
+
+            Console.WriteLine($"Total Sales Tax: {result_2.TotalSalesTax}");
+            Console.WriteLine($"Import Tax: {result_2.TotalImportTax}");
+            Console.WriteLine($"Total: {result_2.Total}");
 
             Console.ReadLine();
         }
